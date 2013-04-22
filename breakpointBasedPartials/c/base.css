@@ -1,0 +1,47 @@
+@-webkit-viewport {
+  width: device-width; }
+
+@-moz-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@viewport {
+  width: device-width; }
+
+/* line 1, ../scss/_smallest.scss */
+aside {
+  color: #333;
+  background-color: #ddd;
+  width: 100%;
+  min-height: 5em; }
+
+/* line 8, ../scss/_smallest.scss */
+.primary {
+  background-color: #bbb;
+  width: 100%;
+  min-height: 10em;
+  /* just to help us see it */ }
+
+@media (min-width: 40em) {
+  /* line 1, ../scss/_40em.scss */
+  aside {
+    width: 49%;
+    float: right; }
+
+  /* line 6, ../scss/_40em.scss */
+  .primary {
+    width: 49%;
+    float: left; } }
+@media (min-width: 60em) {
+  /* line 1, ../scss/_60em.scss */
+  aside {
+    width: 29%; }
+
+  /* line 5, ../scss/_60em.scss */
+  .primary {
+    width: 69%; } }

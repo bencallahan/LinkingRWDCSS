@@ -1,0 +1,21 @@
+/* line 1, ../scss/_40em.scss */
+aside {
+  width: 49%;
+  float: right; }
+
+/* line 6, ../scss/_40em.scss */
+.primary {
+  width: 49%;
+  float: left; }
+
+/* line 1, ../scss/_60em.scss */
+aside {
+  width: 29%; }
+
+/* line 5, ../scss/_60em.scss */
+.primary {
+  width: 69%; }
+
+/* line 4, ../scss/no-mq.scss */
+body {
+  min-width: 60em; }

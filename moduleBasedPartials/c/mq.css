@@ -1,0 +1,46 @@
+@-webkit-viewport {
+  width: device-width; }
+
+@-moz-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@viewport {
+  width: device-width; }
+
+/* line 1, ../scss/_primary.scss */
+.primary {
+  background-color: #bbb;
+  width: 100%;
+  min-height: 10em;
+  /* just to help us see it */ }
+  @media (min-width: 40em) {
+    /* line 1, ../scss/_primary.scss */
+    .primary {
+      width: 49%;
+      float: left; } }
+  @media (min-width: 60em) {
+    /* line 1, ../scss/_primary.scss */
+    .primary {
+      width: 69%; } }
+
+/* line 1, ../scss/_secondary.scss */
+.secondary {
+  color: #333;
+  background-color: #ddd;
+  width: 100%;
+  min-height: 5em; }
+  @media (min-width: 40em) {
+    /* line 1, ../scss/_secondary.scss */
+    .secondary {
+      width: 49%;
+      float: right; } }
+  @media (min-width: 60em) {
+    /* line 1, ../scss/_secondary.scss */
+    .secondary {
+      width: 29%; } }

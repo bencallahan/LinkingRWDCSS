@@ -1,0 +1,1538 @@
+3.2.5 (Media Mark)
+78fc5ca2db597be72c2afe6889b0527bcb62d166
+o:Sass::Tree::RootNode
+:@template"Æ3//////////////////////////////
+// Default Variables
+//////////////////////////////
+$breakpoint-default-feature:  'min-width'     !default;
+$breakpoint-default-media:    'all'           !default;
+$breakpoint-force-media-all:  false           !default;
+$breakpoint-default-pair:     'width'         !default;
+$breakpoint-to-ems:           false           !default;
+$breakpoint-prefixes:         'webkit' 'moz'  !default;
+$breakpoint-prefixed-queries: 'device-pixel-ratio' 'min-device-pixel-ratio' 'max-device-pixel-ratio'                      !default;
+
+$breakpoint-no-queries:       false           !default;
+$breakpoint-no-query-wrappers: false           !default;
+
+$breakpoint-base-font-size: false;
+
+//////////////////////////////
+// Import Breakpoint Helpers
+//////////////////////////////
+@import 'breakpoint/helpers';
+@import 'breakpoint/context';
+
+//////////////////////////////
+// Breakpoint Mixin
+//////////////////////////////
+@mixin breakpoint($breakpoint, $media: $breakpoint-default-media, $no-query: false, $base-font-size: $breakpoint-base-font-size) {
+  // Query and Media String Defaults
+  $query:         false !default;
+  $query-holder:  false !default;
+  $media-string:  false !default;
+  $do-prefix:     false !default;
+
+  $webkit:        false !default;
+  $webkit-first:  true !default;
+  $moz:           false !default;
+  $moz-first:     true !default;
+  $o:             false !default;
+  $o-first:       true !default;
+  $ms:            false !default;
+  $ms-first:      true !default;
+
+  // Holder for Count
+  $first:         true  !default;
+
+  // Reset Context
+  @include TXkgcmVzZXQhIEdvIGF3YXkh;
+
+  // Set Media Context
+  $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh('media', $media);
+
+  // Initialize Query String
+  @if $media != 'all' or $breakpoint-force-media-all {
+    $media-string: "#{$media} ";
+  }
+  @else {
+    $media-string: "";
+  }
+
+  // If we have a single query, let's just work with that.
+  @if is_breakpoint_list($breakpoint) == false {
+    @each $prefix-query in $breakpoint-prefixed-queries {
+      @if $do-prefix == false {
+        $do-prefix: featureExists($prefix-query, $breakpoint);
+      }
+    }
+    @if $do-prefix {
+      @each $prfx in $breakpoint-prefixes {
+        @if $prfx == 'webkit' {
+          $webkit: breakpoint-switch($breakpoint, $media-string, true, $prfx, $base-font-size: $base-font-size);
+        }
+
+        @if $prfx == 'moz' {
+          $moz: breakpoint-switch($breakpoint, $media-string, true, $prfx, $base-font-size: $base-font-size);
+        }
+
+        @if $prfx == 'o' {
+          $o: breakpoint-switch($breakpoint, $media-string, true, $prfx, $base-font-size: $base-font-size);
+        }
+
+        @if $prfx == 'ms' {
+          $ms: breakpoint-switch($breakpoint, $media-string, true, $prfx, $base-font-size: $base-font-size);
+        }
+      }
+    }
+    @else {
+      $query: breakpoint-switch($breakpoint, $media-string, true, $base-font-size: $base-font-size);
+    }
+  }
+  @else {
+    // See if Prefix Query exists
+    @each $prefix-query in $breakpoint-prefixed-queries {
+      @if $do-prefix == false {
+        $do-prefix: featureExists($prefix-query, $breakpoint);
+      }
+    }
+
+    @if $do-prefix {
+      @each $prfx in $breakpoint-prefixes {
+        @each $bkpt in $breakpoint {
+          @if $prfx == 'webkit' {
+            @if $webkit-first {
+              $webkit: breakpoint-switch($bkpt, $media-string, true, $prfx, $base-font-size: $base-font-size);
+              $webkit-first: false;
+            }
+            @else {
+              $webkit: join($webkit, breakpoint-switch($bkpt, $media-string, $prefix: $prfx, $base-font-size: $base-font-size));
+            }
+          }
+
+          @if $prfx == 'moz' {
+            @if $moz-first {
+              $moz: breakpoint-switch($bkpt, $media-string, true, $prfx, $base-font-size: $base-font-size);
+              $moz-first: false;
+            }
+            @else {
+              $moz: join($moz, breakpoint-switch($bkpt, $media-string, $prefix: $prfx, $base-font-size: $base-font-size));
+            }
+          }
+
+          @if $prfx == 'o' {
+            @if $o-first {
+              $o: breakpoint-switch($bkpt, $media-string, true, $prfx, $base-font-size: $base-font-size);
+              $o-first: false;
+            }
+            @else {
+              $o: join($o, breakpoint-switch($bkpt, $media-string, $prefix: $prfx, $base-font-size: $base-font-size));
+            }
+          }
+
+          @if $prfx == 'ms' {
+            @if $ms-first {
+              $ms: breakpoint-switch($bkpt, $media-string, true, $prfx, $base-font-size: $base-font-size);
+              $ms-first: false;
+            }
+            @else {
+              $ms: join($ms, breakpoint-switch($bkpt, $media-string, $prefix: $prfx, $base-font-size: $base-font-size));
+            }
+          }
+        }
+      }
+    }
+    @else {
+      @each $bkpt in $breakpoint {
+        @if $first == true {
+          $query: breakpoint-switch($bkpt, $media-string, true, $base-font-size: $base-font-size);
+          $first: false;
+        }
+        @else {
+          $query: join($query, breakpoint-switch($bkpt, $media-string, $base-font-size: $base-font-size));
+        }
+      }
+    }
+  }
+
+  @if $breakpoint-no-queries {
+    @if $no-query {
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh('no queries', true);
+      @if $breakpoint-no-query-wrappers and type-of($no-query) == string {
+        #{$no-query} & {
+          @content;
+          $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh('no query wrapper', $no-query);
+        }
+      }
+      @else {
+        @content;
+      }
+    }
+  }
+  @else {
+    @if $breakpoint-no-query-wrappers and type-of($no-query) == string {
+      #{$no-query} & {
+        @content;
+        $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh('no query wrapper', $no-query);
+      }
+    }
+    @if $query {
+      @media #{$query} {
+        @content;
+      }
+    }
+    @else {
+      $pf-queries: $webkit, $moz, $o, $ms;
+      $pf-query: ();
+
+      @each $pfq in $pf-queries {
+        @if $pfq {
+          $pf-query: append($pf-query, $pfq, comma);
+        }
+      }
+      @media #{$pf-query} {
+        @content;
+      }
+    }
+  }
+
+  @include TXkgcmVzZXQhIEdvIGF3YXkh;
+}
+
+@function breakpoint-switch($breakpoint, $media-string, $first: false, $prefix: false, $base-font-size: $breakpoint-base-font-size) {
+  // Feature/Value/Length/Query Placehoders:
+  $feature:       false !default;
+  $min-feature:   "min-#{$breakpoint-default-pair}" !default;
+  $max-feature:   "max-#{$breakpoint-default-pair}" !default;
+  $value:         false !default;
+  $min-value:     false !default;
+  $max-value:     false !default;
+  $length:        false !default;
+  $query:         false !default;
+
+  $length: length($breakpoint);
+  // Check to see if there is only one item.
+  @if $length == 1 {
+    $value: $breakpoint;
+    @if type-of($breakpoint) == 'number' {
+      $feature: $breakpoint-default-feature;
+    }
+
+    // If EM Breakpoints are active, do it!
+    @if $breakpoint-to-ems and type-of($value) == 'number' {
+      $value: breakpoint-to-base-em($value, $base-font-size);
+    }
+    // Build the Query
+    $query: breakpoint-generate($media-string, $feature, $value, $first);
+    // Set Context
+    $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($feature, $value);
+  }
+  @else if $length == 2 {
+    // If both are numbers, we've got a double!
+    @if type-of(nth($breakpoint, 1)) == 'number' and type-of(nth($breakpoint, 2)) == 'number' {
+      // See which is larger.
+      @if nth($breakpoint, 1) > nth($breakpoint, 2) {
+        $min-value: nth($breakpoint, 2);
+        $max-value: nth($breakpoint, 1);
+      }
+      @else {
+        $min-value: nth($breakpoint, 1);
+        $max-value: nth($breakpoint, 2);
+      }
+
+      // If EM Breakpoints are active, do it!
+      @if $breakpoint-to-ems and type-of($min-value) == 'number' {
+        $min-value: breakpoint-to-base-em($min-value, $base-font-size);
+      }
+      @if $breakpoint-to-ems and type-of($max-value) == 'number' {
+        $max-value: breakpoint-to-base-em($max-value, $base-font-size);
+      }
+
+      // Min/Max for given
+      $query: breakpoint-generate($media-string, $min-feature, $min-value, $first);
+      $query: join($query, breakpoint-generate($media-string, $max-feature, $max-value));
+      // Set Context
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($min-feature, $min-value);
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($max-feature, $max-value);
+    }
+    @else if type-of(nth($breakpoint, 1)) == 'string' and type-of(nth($breakpoint, 2)) == 'string' {
+      @if breakpoint-string-value(nth($breakpoint, 1)) == true {
+        $feature: nth($breakpoint, 1);
+        $value: nth($breakpoint, 2);
+      }
+      @else {
+        $feature: nth($breakpoint, 2);
+        $value: nth($breakpoint, 1);
+      }
+
+      // If EM Breakpoints are active, do it!
+      @if $breakpoint-to-ems and type-of($value) == 'number' {
+        $value: breakpoint-to-base-em($value, $base-font-size);
+      }
+
+      // Build the Query
+      $query: breakpoint-generate($media-string, $feature, $value, $first);
+      // Set Context
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($feature, $value);
+    }
+    @else {
+      // Because we can have either the first or second option be the feature, we switch on it.
+      @if type-of(nth($breakpoint, 1)) == string {
+        $feature: nth($breakpoint, 1);
+        $value: nth($breakpoint, 2);
+      }
+      @else if type-of(nth($breakpoint, 2)) == string {
+        $feature: nth($breakpoint, 2);
+        $value: nth($breakpoint, 1);
+      }
+
+      @if $feature == 'device-pixel-ratio' or $feature == 'min-device-pixel-ratio' or $feature == 'max-device-pixel-ratio' {
+        $feature: breakpoint-experimental($feature, $prefix);
+        //$value: 96 * $value * 1dpi;
+        //        @if $feature == 'device-pixel-ratio' {
+        //          $feature: 'resolution';
+        //        }
+        //        @else if $feature == 'min-device-pixel-ratio' {
+        //          $feature: 'min-resolution';
+        //        }
+        //        @else if $feature == 'max-device-pixel-ratio' {
+        //          $feature: 'max-resolution';
+        //        }
+      }
+
+      // If EM Breakpoints are active, do it!
+      @if $breakpoint-to-ems and type-of($value) == 'number' {
+        $value: breakpoint-to-base-em($value, $base-font-size);
+      }
+
+      // Build the Query
+      $query: breakpoint-generate($media-string, $feature, $value, $first);
+      // Set Context
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($feature, $value);
+    }
+  }
+  @else if $length == 3 {
+    @if type-of(nth($breakpoint, 1)) == 'string' {
+      $feature: nth($breakpoint, 1);
+      // See which is larger.
+      @if nth($breakpoint, 2) > nth($breakpoint, 3) {
+        $min-value: nth($breakpoint, 3);
+        $max-value: nth($breakpoint, 2);
+      }
+      @else {
+        $min-value: nth($breakpoint, 2);
+        $max-value: nth($breakpoint, 3);
+      }
+    }
+    @else {
+      $feature: nth($breakpoint, 3);
+      // See which is larger.
+      @if nth($breakpoint, 1) > nth($breakpoint, 2) {
+        $min-value: nth($breakpoint, 2);
+        $max-value: nth($breakpoint, 1);
+      }
+      @else {
+        $min-value: nth($breakpoint, 1);
+        $max-value: nth($breakpoint, 2);
+      }
+    }
+
+    // If EM Breakpoints are active, do it!
+    @if $breakpoint-to-ems and type-of($min-value) == 'number' {
+      $min-value: breakpoint-to-base-em($min-value, $base-font-size);
+    }
+    @if $breakpoint-to-ems and type-of($max-value) == 'number' {
+      $max-value: breakpoint-to-base-em($max-value, $base-font-size);
+    }
+
+    @if breakpoint-min-max($feature) == true {
+      @if $feature == 'device-pixel-ratio' {
+        $min-feature: breakpoint-experimental('min-#{$feature}', $prefix);
+        $max-feature: breakpoint-experimental('max-#{$feature}', $prefix);
+      }
+      @else {
+        $min-feature: 'min-#{$feature}';
+        $max-feature: 'max-#{$feature}';
+      }
+
+      // Min/Max for given
+      $query: breakpoint-generate($media-string, $min-feature, $min-value, $first);
+      $query: join($query, breakpoint-generate($media-string, $max-feature, $max-value));
+      // Set Context
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($min-feature, $min-value);
+      $context: U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh($max-feature, $max-value);
+    }
+    @else {
+      @warn '#{$feature} cannot have a min/max value!';
+    }
+  }
+
+  @return $query;
+}
+
+@function breakpoint-generate($media, $feature, $value, $first: false) {
+  // Media Query string to be returned
+  $new-string: "";
+
+  // If it's the first item, it gets special treatment
+  @if $first == true {
+    // And Statement
+    $and: 'and ';
+    // If $media is blank (i.e. all), remove and statement
+    @if $media == '' {
+      $and: '';
+    }
+
+    @if $feature != false {
+      $new-string: #{$media}unquote("#{$and}(#{$feature}: #{$value})");
+    }
+    @else {
+      $new-string: #{$media}unquote("#{$and}(#{$value})");
+    }
+  }
+
+  @else {
+    @if $feature != false {
+      $new-string: unquote("and (#{$feature}: #{$value})");
+    }
+    @else {
+      $new-string: unquote("and (#{$value})");
+    }
+  }
+
+  @return $new-string;
+}
+:
+@linei:@has_childrenT:@options{ :@children[o:Sass::Tree::CommentNode
+;i;	@;
+[ :
+@type:silent:@value["Z/*////////////////////////////
+ * Default Variables
+ *//////////////////////////// */o:Sass::Tree::VariableNode:@guarded"!default;i	:
+@expro:Sass::Script::String	;i	;	@;:string;"min-width;	@:
+@name"breakpoint-default-feature;
+[ o;;"!default;i
+;o;	;i
+;	@;;;"all;	@;"breakpoint-default-media;
+[ o;;"!default;i;o:Sass::Script::Bool;i;	@;F;	@;"breakpoint-force-media-all;
+[ o;;"!default;i;o;	;i;	@;;;"
+width;	@;"breakpoint-default-pair;
+[ o;;"!default;i;o;;i;	@;F;	@;"breakpoint-to-ems;
+[ o;;"!default;i;o:Sass::Script::List	;i;	@:@separator:
+space;[o;	;i;	@;;;"webkito;	;i;	@;;;"moz;	@;"breakpoint-prefixes;
+[ o;;"!default;i;o;	;i;	@;;;[o;	;i;	@;;;"device-pixel-ratioo;	;i;	@;;;"min-device-pixel-ratioo;	;i;	@;;;"max-device-pixel-ratio;	@;" breakpoint-prefixed-queries;
+[ o;;"!default;i;o;;i;	@;F;	@;"breakpoint-no-queries;
+[ o;;"!default;i;o;;i;	@;F;	@;"!breakpoint-no-query-wrappers;
+[ o;;0;i;o;;i;	@;F;	@;"breakpoint-base-font-size;
+[ o;
+;i;	@;
+[ ;;;["b/*////////////////////////////
+ * Import Breakpoint Helpers
+ *//////////////////////////// */o:Sass::Tree::ImportNode;0:@imported_file0;i;	@:@imported_filename"breakpoint/helpers;
+[ o;;0;0;i;	@;"breakpoint/context;
+[ o;
+;i;	@;
+[ ;;;["Y/*////////////////////////////
+ * Breakpoint Mixin
+ *//////////////////////////// */o:Sass::Tree::MixinDefNode;i;T;	@;"breakpoint:@splat0;
+[o;
+;i ;	@;
+[ ;;;["*/* Query and Media String Defaults */o;;"!default;i!;o;;i!;	@;F;	@;"
+query;
+[ o;;"!default;i";o;;i";	@;F;	@;"query-holder;
+[ o;;"!default;i#;o;;i#;	@;F;	@;"media-string;
+[ o;;"!default;i$;o;;i$;	@;F;	@;"do-prefix;
+[ o;;"!default;i&;o;;i&;	@;F;	@;"webkit;
+[ o;;"!default;i';o;;i';	@;T;	@;"webkit-first;
+[ o;;"!default;i(;o;;i(;	@;F;	@;"moz;
+[ o;;"!default;i);o;;i);	@;T;	@;"moz-first;
+[ o;;"!default;i*;o;;i*;	@;F;	@;"o;
+[ o;;"!default;i+;o;;i+;	@;T;	@;"o-first;
+[ o;;"!default;i,;o;;i,;	@;F;	@;"ms;
+[ o;;"!default;i-;o;;i-;	@;T;	@;"ms-first;
+[ o;
+;i/;	@;
+[ ;;;["/* Holder for Count */o;;"!default;i0;o;;i0;	@;T;	@;"
+first;
+[ o;
+;i2;	@;
+[ ;;;["/* Reset Context */o:Sass::Tree::MixinNode;i3;	@;"TXkgcmVzZXQhIEdvIGF3YXkh;0;
+[ :
+@args[ :@keywords{ o;
+;i5;	@;
+[ ;;;["/* Set Media Context */o;;0;i6;o:Sass::Script::Funcall;i6;	@;")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i6;	@;;;"
+mediao:Sass::Script::Variable	;i6:@underscored_name"
+media;	@;"
+media; { ;	@;"context;
+[ o;
+;i8;	@;
+[ ;;;[""/* Initialize Query String */u:Sass::Tree::IfNode€[o:Sass::Script::Operation
+:
+@linei9:@operand1o; 
+;i9;o:Sass::Script::Variable	;i9:@underscored_name"
+media:@options{ :
+@name"
+media;
+@
+:@operator:neq:@operand2o:Sass::Script::String	;i9;
+@
+:
+@type:string:@value"all;
+@
+;:or;o;	;i9;	"breakpoint_force_media_all;
+@
+;"breakpoint-force-media-allu:Sass::Tree::IfNode¶[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei=:
+@expro:Sass::Script::String	;i=:@options{ :
+@type:string:@value" ;
+@	:
+@name"media-string:@children[ [o:Sass::Tree::VariableNode:@guarded0;i::
+@expro:&Sass::Script::StringInterpolation
+:@beforeo;	;i:;
+@
+;;;" ;i:;
+@
+:@aftero;	;i:;
+@
+;;;" :	@mido;	;i:;	"
+media;
+@
+;"
+media;
+@
+;"media-string:@children[ o;
+;i@;	@;
+[ ;;;["@/* If we have a single query, let's just work with that. */u;$ë,[o:Sass::Script::Operation
+:
+@lineiA:@operand1o:Sass::Script::Funcall;iA:@options{ :
+@name"is_breakpoint_list:@splat0:
+@args[o:Sass::Script::Variable	;iA:@underscored_name"breakpoint;	@;
+"breakpoint:@keywords{ ;	@:@operator:eq:@operand2o:Sass::Script::Bool;iA;	@:@valueFu:Sass::Tree::IfNodeŸ[00[o:Sass::Tree::CommentNode
+:
+@linei_:@options{ :@children[ :
+@type:silent:@value["%/* See if Prefix Query exists */o:Sass::Tree::EachNode:
+@listo:Sass::Script::Variable	;i`:@underscored_name" breakpoint_prefixed_queries;@:
+@name" breakpoint-prefixed-queries;i`:@has_childrenT;@;[u:Sass::Tree::IfNode [o:Sass::Script::Operation
+:
+@lineia:@operand1o:Sass::Script::Variable	;ia:@underscored_name"do_prefix:@options{ :
+@name"do-prefix;
+@	:@operator:eq:@operand2o:Sass::Script::Bool;ia;
+@	:@valueF0[o:Sass::Tree::VariableNode:@guarded0;ib:
+@expro:Sass::Script::Funcall;ib;
+@	;"featureExists:@splat0:
+@args[o;	;ib;	"prefix_query;
+@	;"prefix-queryo;	;ib;	"breakpoint;
+@	;"breakpoint:@keywords{ ;
+@	;"do-prefix:@children[ :	@var"prefix-queryu;¨[o:Sass::Script::Variable	:
+@lineif:@underscored_name"do_prefix:@options{ :
+@name"do-prefixu:Sass::Tree::IfNode’[00[o:Sass::Tree::EachNode:
+@listo:Sass::Script::Variable	:
+@lineiè:@underscored_name"breakpoint:@options{ :
+@name"breakpoint;iè:@has_childrenT;
+@
+:@children[u:Sass::Tree::IfNode[o:Sass::Script::Operation
+:
+@lineiê:@operand1o:Sass::Script::Variable	;iê:@underscored_name"
+first:@options{ :
+@name"
+first;
+@	:@operator:eq:@operand2o:Sass::Script::Bool;iê;
+@	:@valueTu:Sass::Tree::IfNodeÆ[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiï:
+@expro:Sass::Script::Funcall;iï:@options{ :
+@name"	join:@splat0:
+@args[o:Sass::Script::Variable	;iï:@underscored_name"
+query;
+@	;"
+queryo;	;iï;
+@	;"breakpoint-switch;0;[o;	;iï;"	bkpt;
+@	;"	bkpto;	;iï;"media_string;
+@	;"media-string:@keywords{"base_font_sizeo;	;iï;"base_font_size;
+@	;"base-font-size;{ ;
+@	;"
+query:@children[ [o:Sass::Tree::VariableNode:@guarded0;ië:
+@expro:Sass::Script::Funcall;ië;
+@	;"breakpoint-switch:@splat0:
+@args[o;	;ië;	"	bkpt;
+@	;"	bkpto;	;ië;	"media_string;
+@	;"media-stringo;;ië;
+@	;T:@keywords{"base_font_sizeo;	;ië;	"base_font_size;
+@	;"base-font-size;
+@	;"
+query:@children[ o;;0;ií;o;;ií;
+@	;F;
+@	;"
+first;[ :	@var"	bkpt[o:Sass::Tree::EachNode:
+@listo; 	;ig;"breakpoint_prefixes;@;	"breakpoint-prefixes;ig:@has_childrenT;@:@children[o;;o; 	;ih;"breakpoint;@;	"breakpoint;ih;T;@;[	u;
+Ì[o:Sass::Script::Operation
+:
+@lineii:@operand1o:Sass::Script::Variable	;ii:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;ii;
+@	:
+@type:string:@value"webkit0[u:Sass::Tree::IfNodeÚ[o:Sass::Script::Variable	:
+@lineij:@underscored_name"webkit_first:@options{ :
+@name"webkit-firstu:Sass::Tree::IfNodeŒ[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineio:
+@expro:Sass::Script::Funcall;io:@options{ :
+@name"	join:@splat0:
+@args[o:Sass::Script::Variable	;io:@underscored_name"webkit;
+@	;"webkito;	;io;
+@	;"breakpoint-switch;0;[o;	;io;"	bkpt;
+@	;"	bkpto;	;io;"media_string;
+@	;"media-string:@keywords{"prefixo;	;io;"	prfx;
+@	;"	prfx"base_font_sizeo;	;io;"base_font_size;
+@	;"base-font-size;{ ;
+@	;"webkit:@children[ [o:Sass::Tree::VariableNode:@guarded0;ik:
+@expro:Sass::Script::Funcall;ik;@;	"breakpoint-switch:@splat0:
+@args[	o; 	;ik;"	bkpt;@;	"	bkpto; 	;ik;"media_string;@;	"media-stringo:Sass::Script::Bool;ik;@:@valueTo; 	;ik;"	prfx;@;	"	prfx:@keywords{"base_font_sizeo; 	;ik;"base_font_size;@;	"base-font-size;@;	"webkit:@children[ o;;0;il;o;;il;@;F;@;	"webkit-first;[ u;
+’[o:Sass::Script::Operation
+:
+@lineis:@operand1o:Sass::Script::Variable	;is:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;is;
+@	:
+@type:string:@value"moz0[u:Sass::Tree::IfNode›[o:Sass::Script::Variable	:
+@lineit:@underscored_name"moz_first:@options{ :
+@name"moz-firstu:Sass::Tree::IfNode≈[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiy:
+@expro:Sass::Script::Funcall;iy:@options{ :
+@name"	join:@splat0:
+@args[o:Sass::Script::Variable	;iy:@underscored_name"moz;
+@	;"mozo;	;iy;
+@	;"breakpoint-switch;0;[o;	;iy;"	bkpt;
+@	;"	bkpto;	;iy;"media_string;
+@	;"media-string:@keywords{"prefixo;	;iy;"	prfx;
+@	;"	prfx"base_font_sizeo;	;iy;"base_font_size;
+@	;"base-font-size;{ ;
+@	;"moz:@children[ [o:Sass::Tree::VariableNode:@guarded0;iu:
+@expro:Sass::Script::Funcall;iu;@;	"breakpoint-switch:@splat0:
+@args[	o; 	;iu;"	bkpt;@;	"	bkpto; 	;iu;"media_string;@;	"media-stringo:Sass::Script::Bool;iu;@:@valueTo; 	;iu;"	prfx;@;	"	prfx:@keywords{"base_font_sizeo; 	;iu;"base_font_size;@;	"base-font-size;@;	"moz:@children[ o;;0;iv;o;;iv;@;F;@;	"moz-first;[ u;
+œ[o:Sass::Script::Operation
+:
+@linei}:@operand1o:Sass::Script::Variable	;i}:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;i};
+@	:
+@type:string:@value"o0[u:Sass::Tree::IfNodeŸ[o:Sass::Script::Variable	:
+@linei~:@underscored_name"o_first:@options{ :
+@name"o-firstu:Sass::Tree::IfNode«[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei~:
+@expro:Sass::Script::Funcall;i~:@options{ :
+@name"	join:@splat0:
+@args[o:Sass::Script::Variable	;i~:@underscored_name"o;
+@	;"oo;	;i~;
+@	;"breakpoint-switch;0;[o;	;i~;"	bkpt;
+@	;"	bkpto;	;i~;"media_string;
+@	;"media-string:@keywords{"prefixo;	;i~;"	prfx;
+@	;"	prfx"base_font_sizeo;	;i~;"base_font_size;
+@	;"base-font-size;{ ;
+@	;"o:@children[ [o:Sass::Tree::VariableNode:@guarded0;i:
+@expro:Sass::Script::Funcall;i;@;	"breakpoint-switch:@splat0:
+@args[	o; 	;i;"	bkpt;@;	"	bkpto; 	;i;"media_string;@;	"media-stringo:Sass::Script::Bool;i;@:@valueTo; 	;i;"	prfx;@;	"	prfx:@keywords{"base_font_sizeo; 	;i;"base_font_size;@;	"base-font-size;@;	"o:@children[ o;;0;i{;o;;i{;@;F;@;	"o-first;[ u;
+‚[o:Sass::Script::Operation
+:
+@lineiÇ:@operand1o:Sass::Script::Variable	;iÇ:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iÇ;
+@	:
+@type:string:@value"ms0[u:Sass::Tree::IfNodeË[o:Sass::Script::Variable	:
+@lineiÉ:@underscored_name"ms_first:@options{ :
+@name"ms-firstu:Sass::Tree::IfNode [00[o:Sass::Tree::VariableNode:@guarded0:
+@lineià:
+@expro:Sass::Script::Funcall;ià:@options{ :
+@name"	join:@splat0:
+@args[o:Sass::Script::Variable	;ià:@underscored_name"ms;
+@	;"mso;	;ià;
+@	;"breakpoint-switch;0;[o;	;ià;"	bkpt;
+@	;"	bkpto;	;ià;"media_string;
+@	;"media-string:@keywords{"prefixo;	;ià;"	prfx;
+@	;"	prfx"base_font_sizeo;	;ià;"base_font_size;
+@	;"base-font-size;{ ;
+@	;"ms:@children[ [o:Sass::Tree::VariableNode:@guarded0;iÑ:
+@expro:Sass::Script::Funcall;iÑ;@;	"breakpoint-switch:@splat0:
+@args[	o; 	;iÑ;"	bkpt;@;	"	bkpto; 	;iÑ;"media_string;@;	"media-stringo:Sass::Script::Bool;iÑ;@:@valueTo; 	;iÑ;"	prfx;@;	"	prfx:@keywords{"base_font_sizeo; 	;iÑ;"base_font_size;@;	"base-font-size;@;	"ms:@children[ o;;0;iÖ;o;;iÖ;@;F;@;	"ms-first;[ :	@var"	bkpt;"	prfx[o:Sass::Tree::EachNode:
+@listo;	;iB;" breakpoint_prefixed_queries;	@;
+" breakpoint-prefixed-queries;iB:@has_childrenT;	@:@children[u; [o:Sass::Script::Operation
+:
+@lineiC:@operand1o:Sass::Script::Variable	;iC:@underscored_name"do_prefix:@options{ :
+@name"do-prefix;
+@	:@operator:eq:@operand2o:Sass::Script::Bool;iC;
+@	:@valueF0[o:Sass::Tree::VariableNode:@guarded0;iD:
+@expro:Sass::Script::Funcall;iD;
+@	;"featureExists:@splat0:
+@args[o;	;iD;	"prefix_query;
+@	;"prefix-queryo;	;iD;	"breakpoint;
+@	;"breakpoint:@keywords{ ;
+@	;"do-prefix:@children[ :	@var"prefix-queryu;¸[o:Sass::Script::Variable	:
+@lineiG:@underscored_name"do_prefix:@options{ :
+@name"do-prefixu:Sass::Tree::IfNodeù[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei[:
+@expro:Sass::Script::Funcall;i[:@options{ :
+@name"breakpoint-switch:@splat0:
+@args[o:Sass::Script::Variable	;i[:@underscored_name"breakpoint;
+@	;"breakpointo;	;i[;"media_string;
+@	;"media-stringo:Sass::Script::Bool;i[;
+@	:@valueT:@keywords{"base_font_sizeo;	;i[;"base_font_size;
+@	;"base-font-size;
+@	;"
+query:@children[ [o:Sass::Tree::EachNode:
+@listo; 	;iH;"breakpoint_prefixes;@;	"breakpoint-prefixes;iH:@has_childrenT;@:@children[	u;
+V[o:Sass::Script::Operation
+:
+@lineiI:@operand1o:Sass::Script::Variable	;iI:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iI;
+@	:
+@type:string:@value"webkit0[o:Sass::Tree::VariableNode:@guarded0;iJ:
+@expro:Sass::Script::Funcall;iJ;
+@	;"breakpoint-switch:@splat0:
+@args[	o;	;iJ;	"breakpoint;
+@	;"breakpointo;	;iJ;	"media_string;
+@	;"media-stringo:Sass::Script::Bool;iJ;
+@	;To;	;iJ;	"	prfx;
+@	;"	prfx:@keywords{"base_font_sizeo;	;iJ;	"base_font_size;
+@	;"base-font-size;
+@	;"webkit:@children[ u;
+P[o:Sass::Script::Operation
+:
+@lineiM:@operand1o:Sass::Script::Variable	;iM:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iM;
+@	:
+@type:string:@value"moz0[o:Sass::Tree::VariableNode:@guarded0;iN:
+@expro:Sass::Script::Funcall;iN;
+@	;"breakpoint-switch:@splat0:
+@args[	o;	;iN;	"breakpoint;
+@	;"breakpointo;	;iN;	"media_string;
+@	;"media-stringo:Sass::Script::Bool;iN;
+@	;To;	;iN;	"	prfx;
+@	;"	prfx:@keywords{"base_font_sizeo;	;iN;	"base_font_size;
+@	;"base-font-size;
+@	;"moz:@children[ u;
+L[o:Sass::Script::Operation
+:
+@lineiQ:@operand1o:Sass::Script::Variable	;iQ:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iQ;
+@	:
+@type:string:@value"o0[o:Sass::Tree::VariableNode:@guarded0;iR:
+@expro:Sass::Script::Funcall;iR;
+@	;"breakpoint-switch:@splat0:
+@args[	o;	;iR;	"breakpoint;
+@	;"breakpointo;	;iR;	"media_string;
+@	;"media-stringo:Sass::Script::Bool;iR;
+@	;To;	;iR;	"	prfx;
+@	;"	prfx:@keywords{"base_font_sizeo;	;iR;	"base_font_size;
+@	;"base-font-size;
+@	;"o:@children[ u;
+N[o:Sass::Script::Operation
+:
+@lineiU:@operand1o:Sass::Script::Variable	;iU:@underscored_name"	prfx:@options{ :
+@name"	prfx;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iU;
+@	:
+@type:string:@value"ms0[o:Sass::Tree::VariableNode:@guarded0;iV:
+@expro:Sass::Script::Funcall;iV;
+@	;"breakpoint-switch:@splat0:
+@args[	o;	;iV;	"breakpoint;
+@	;"breakpointo;	;iV;	"media_string;
+@	;"media-stringo:Sass::Script::Bool;iV;
+@	;To;	;iV;	"	prfx;
+@	;"	prfx:@keywords{"base_font_sizeo;	;iV;	"base_font_size;
+@	;"base-font-size;
+@	;"ms:@children[ :	@var"	prfxu;$
+[o:Sass::Script::Variable	:
+@lineiõ:@underscored_name"breakpoint_no_queries:@options{ :
+@name"breakpoint-no-queriesu:Sass::Tree::IfNode^[00[u:Sass::Tree::IfNode[o:Sass::Script::Operation
+:
+@linei™:@operand1o:Sass::Script::Variable	;i™:@underscored_name"!breakpoint_no_query_wrappers:@options{ :
+@name"!breakpoint-no-query-wrappers;
+@	:@operator:and:@operand2o; 
+;i™;o:Sass::Script::Funcall;i™;
+@	;"type-of:@splat0:
+@args[o;	;i™;	"no_query;
+@	;"no-query:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;i™;
+@	:
+@type:identifier:@value"string0[o:Sass::Tree::RuleNode;i´:@has_childrenT;
+@	:
+@tabsi :@children[o:Sass::Tree::ContentNode;i¨;
+@	;[ o:Sass::Tree::VariableNode:@guarded0;i≠:
+@expro;;i≠;
+@	;")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i≠;
+@	;:string;"no query wrappero;	;i≠;	"no_query;
+@	;"no-query;{ ;
+@	;"context;[ :
+@rule[o;	;i´;	"no_query;
+@	;"no-query" &u; [o:Sass::Script::Variable	:
+@linei∞:@underscored_name"
+query:@options{ :
+@name"
+queryu:Sass::Tree::IfNode[00[	o:Sass::Tree::VariableNode:@guarded0:
+@linei∂:
+@expro:Sass::Script::List	;i∂:@options{ :@separator:
+comma:@value[	o:Sass::Script::Variable	;i∂:@underscored_name"webkit;
+@	:
+@name"webkito;	;i∂;"moz;
+@	;"mozo;	;i∂;"o;
+@	;"oo;	;i∂;"ms;
+@	;"ms;
+@	;"pf-queries:@children[ o; ;0;i∑;o;		;i∑;
+@	;:
+space;[ ;
+@	;"pf-query;[ o:Sass::Tree::EachNode:
+@listo;	;iπ;"pf_queries;
+@	;"pf-queries;iπ:@has_childrenT;
+@	;[u:Sass::Tree::IfNodey[o:Sass::Script::Variable	:
+@linei∫:@underscored_name"pfq:@options{ :
+@name"pfq0[o:Sass::Tree::VariableNode:@guarded0;iª:
+@expro:Sass::Script::Funcall;iª;@;	"append:@splat0:
+@args[o; 	;iª;"pf_query;@;	"pf-queryo; 	;iª;"pfq;@;	"pfqo:Sass::Script::String	;iª;@:
+@type:identifier:@value"
+comma:@keywords{ ;@;	"pf-query:@children[ :	@var"pfqo:Sass::Tree::MediaNode;iæ:@query[o;	;iæ;"pf_query;
+@	;"pf-query;T;
+@	:
+@tabsi ;[o:Sass::Tree::ContentNode;iø;
+@	;[ ;" [o:Sass::Tree::MediaNode;i±:@query[o; 	;i±;"
+query;@;	"
+query:@has_childrenT;@:
+@tabsi :@children[o:Sass::Tree::ContentNode;i≤;@;[ :@value" [u;
+[o:Sass::Script::Variable	:
+@lineiú:@underscored_name"no_query:@options{ :
+@name"no-query0[o:Sass::Tree::VariableNode:@guarded0;iù:
+@expro:Sass::Script::Funcall;iù;@;	")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh:@splat0:
+@args[o:Sass::Script::String	;iù;@:
+@type:string:@value"no querieso:Sass::Script::Bool;iù;@;T:@keywords{ ;@;	"context:@children[ u:Sass::Tree::IfNodeu[o:Sass::Script::Operation
+:
+@lineiû:@operand1o:Sass::Script::Variable	;iû:@underscored_name"!breakpoint_no_query_wrappers:@options{ :
+@name"!breakpoint-no-query-wrappers;
+@	:@operator:and:@operand2o; 
+;iû;o:Sass::Script::Funcall;iû;
+@	;"type-of:@splat0:
+@args[o;	;iû;	"no_query;
+@	;"no-query:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;iû;
+@	:
+@type:identifier:@value"stringu:Sass::Tree::IfNodeK[00[o:Sass::Tree::ContentNode:
+@linei•:@options{ :@children[ [o:Sass::Tree::RuleNode;iü:@has_childrenT;
+@	:
+@tabsi :@children[o:Sass::Tree::ContentNode;i†;
+@	;[ o:Sass::Tree::VariableNode:@guarded0;i°:
+@expro;;i°;
+@	;")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i°;
+@	;:string;"no query wrappero;	;i°;	"no_query;
+@	;"no-query;{ ;
+@	;"context;[ :
+@rule[o;	;iü;	"no_query;
+@	;"no-query" &o;;iƒ;	@;"TXkgcmVzZXQhIEdvIGF3YXkh;0;
+[ ;[ ; { ;[	[o;";#"breakpoint;	@;"breakpoint0[o;";#"
+media;	@;"
+mediao;"	;i;#"breakpoint_default_media;	@;"breakpoint-default-media[o;";#"no_query;	@;"no-queryo;;i;	@;F[o;";#"base_font_size;	@;"base-font-sizeo;"	;i;#"breakpoint_base_font_size;	@;"breakpoint-base-font-sizeo:Sass::Tree::FunctionNode;i«;T;	@;"breakpoint-switch;0;
+[o;
+;i»;	@;
+[ ;;;["2/* Feature/Value/Length/Query Placehoders: */o;;"!default;i…;o;;i…;	@;F;	@;"feature;
+[ o;;"!default;i ;o:&Sass::Script::StringInterpolation
+:@beforeo;	;i ;	@;;;"	min-;i ;	@:@aftero;	;i ;	@;;;" :	@mido;"	;i ;#"breakpoint_default_pair;	@;"breakpoint-default-pair;	@;"min-feature;
+[ o;;"!default;iÀ;o;&
+;'o;	;iÀ;	@;;;"	max-;iÀ;	@;(o;	;iÀ;	@;;;" ;)o;"	;iÀ;#"breakpoint_default_pair;	@;"breakpoint-default-pair;	@;"max-feature;
+[ o;;"!default;iÃ;o;;iÃ;	@;F;	@;"
+value;
+[ o;;"!default;iÕ;o;;iÕ;	@;F;	@;"min-value;
+[ o;;"!default;iŒ;o;;iŒ;	@;F;	@;"max-value;
+[ o;;"!default;iœ;o;;iœ;	@;F;	@;"length;
+[ o;;"!default;i–;o;;i–;	@;F;	@;"
+query;
+[ o;;0;i“;o;!;i“;	@;"length;0;[o;"	;i“;#"breakpoint;	@;"breakpoint; { ;	@;"length;
+[ o;
+;i”;	@;
+[ ;;;["2/* Check to see if there is only one item. */u;$uY[o:Sass::Script::Operation
+:
+@linei‘:@operand1o:Sass::Script::Variable	;i‘:@underscored_name"length:@options{ :
+@name"length;
+@	:@operator:eq:@operand2o:Sass::Script::Number;i‘;
+@	:@denominator_units[ :@original"1:@numerator_units[ :@valueiu:Sass::Tree::IfNode=Q[o:Sass::Script::Operation
+:
+@linei„:@operand1o:Sass::Script::Variable	;i„:@underscored_name"length:@options{ :
+@name"length;
+@	:@operator:eq:@operand2o:Sass::Script::Number;i„;
+@	:@denominator_units[ :@original"2:@numerator_units[ :@valueiu:Sass::Tree::IfNodeç![o:Sass::Script::Operation
+:
+@linei7:@operand1o:Sass::Script::Variable	;i7:@underscored_name"length:@options{ :
+@name"length;
+@	:@operator:eq:@operand2o:Sass::Script::Number;i7;
+@	:@denominator_units[ :@original"3:@numerator_units[ :@valuei0[
+u:Sass::Tree::IfNode[o:Sass::Script::Operation
+:
+@linei8:@operand1o:Sass::Script::Funcall;i8:@options{ :
+@name"type-of:@splat0:
+@args[o;;i8;	@;
+"nth;0;[o:Sass::Script::Variable	;i8:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;i8;	@:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;{ ;	@:@operator:eq:@operand2o:Sass::Script::String	;i8;	@:
+@type:string;"stringu:Sass::Tree::IfNode¯[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiE:
+@expro:Sass::Script::Funcall;iE:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;iE:@underscored_name"breakpoint;
+@	;"breakpointo:Sass::Script::Number;iE;
+@	:@denominator_units[ :@original"3:@numerator_units[ :@valuei:@keywords{ ;
+@	;"feature:@children[ o:Sass::Tree::CommentNode
+;iF;
+@	;[ :
+@type:silent;["/* See which is larger. */u:Sass::Tree::IfNode [o:Sass::Script::Operation
+:
+@lineiG:@operand1o:Sass::Script::Funcall;iG:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;iG:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;iG;	@:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;	@:@operator:gt:@operand2o;;iG;	@;
+"nth;0;[o;	;iG;"breakpoint;	@;
+"breakpointo;;iG;	@;@;"2;[ ;i;{ u:Sass::Tree::IfNode˜[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiL:
+@expro:Sass::Script::Funcall;iL:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;iL:@underscored_name"breakpoint;
+@	;"breakpointo:Sass::Script::Number;iL;
+@	:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;
+@	;"min-value:@children[ o; ;0;iM;o;	;iM;
+@	;"nth;0;[o;	;iM;"breakpoint;
+@	;"breakpointo;;iM;
+@	;@;"2;[ ;i;{ ;
+@	;"max-value;[ [o:Sass::Tree::VariableNode:@guarded0;iH:
+@expro;;iH;	@;
+"nth;0;[o;	;iH;"breakpoint;	@;
+"breakpointo;;iH;	@;@;"2;[ ;i;{ ;	@;
+"min-value:@children[ o;;0;iI;o;;iI;	@;
+"nth;0;[o;	;iI;"breakpoint;	@;
+"breakpointo;;iI;	@;@;"1;[ ;i;{ ;	@;
+"max-value;[ [o:Sass::Tree::VariableNode:@guarded0;i9:
+@expro;;i9;	@;
+"nth;0;[o;	;i9;"breakpoint;	@;
+"breakpointo;;i9;	@;@;"1;[ ;i;{ ;	@;
+"feature:@children[ o:Sass::Tree::CommentNode
+;i:;	@;[ ;:silent;["/* See which is larger. */u; [o:Sass::Script::Operation
+:
+@linei;:@operand1o:Sass::Script::Funcall;i;:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;i;:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;i;;	@:@denominator_units[ :@original"2:@numerator_units[ :@valuei:@keywords{ ;	@:@operator:gt:@operand2o;;i;;	@;
+"nth;0;[o;	;i;;"breakpoint;	@;
+"breakpointo;;i;;	@;@;"3;[ ;i;{ u:Sass::Tree::IfNode˜[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei@:
+@expro:Sass::Script::Funcall;i@:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;i@:@underscored_name"breakpoint;
+@	;"breakpointo:Sass::Script::Number;i@;
+@	:@denominator_units[ :@original"2:@numerator_units[ :@valuei:@keywords{ ;
+@	;"min-value:@children[ o; ;0;iA;o;	;iA;
+@	;"nth;0;[o;	;iA;"breakpoint;
+@	;"breakpointo;;iA;
+@	;@;"3;[ ;i;{ ;
+@	;"max-value;[ [o:Sass::Tree::VariableNode:@guarded0;i<:
+@expro;;i<;	@;
+"nth;0;[o;	;i<;"breakpoint;	@;
+"breakpointo;;i<;	@;@;"3;[ ;i;{ ;	@;
+"min-value:@children[ o;;0;i=;o;;i=;	@;
+"nth;0;[o;	;i=;"breakpoint;	@;
+"breakpointo;;i=;	@;@;"2;[ ;i;{ ;	@;
+"max-value;[ o:Sass::Tree::CommentNode
+;iQ;
+@	:@children[ :
+@type:silent;["//* If EM Breakpoints are active, do it! */u;o[o:Sass::Script::Operation
+:
+@lineiR:@operand1o:Sass::Script::Variable	;iR:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;iR;o:Sass::Script::Funcall;iR;
+@	;"type-of:@splat0:
+@args[o;	;iR;	"min_value;
+@	;"min-value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;iR;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;iS:
+@expro;;iS;
+@	;"breakpoint-to-base-em;0;[o;	;iS;	"min_value;
+@	;"min-valueo;	;iS;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"min-value:@children[ u;o[o:Sass::Script::Operation
+:
+@lineiU:@operand1o:Sass::Script::Variable	;iU:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;iU;o:Sass::Script::Funcall;iU;
+@	;"type-of:@splat0:
+@args[o;	;iU;	"max_value;
+@	;"max-value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;iU;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;iV:
+@expro;;iV;
+@	;"breakpoint-to-base-em;0;[o;	;iV;	"max_value;
+@	;"max-valueo;	;iV;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"max-value:@children[ u;[o:Sass::Script::Operation
+:
+@lineiY:@operand1o:Sass::Script::Funcall;iY:@options{ :
+@name"breakpoint-min-max:@splat0:
+@args[o:Sass::Script::Variable	;iY:@underscored_name"feature;	@;
+"feature:@keywords{ ;	@:@operator:eq:@operand2o:Sass::Script::Bool;iY;	@:@valueTu:Sass::Tree::IfNodeO[00[o:Sass::Tree::WarnNode	:
+@lineik:
+@expro:&Sass::Script::StringInterpolation
+:@beforeo:Sass::Script::String	;ik:@options{ :
+@type:string:@value" ;ik;@
+:@aftero;
+	;ik;@
+;;;"" cannot have a min/max value!:	@mido:Sass::Script::Variable	;ik:@underscored_name"feature;@
+:
+@name"feature;@
+:@children[ [u;E[o:Sass::Script::Operation
+:
+@lineiZ:@operand1o:Sass::Script::Variable	;iZ:@underscored_name"feature:@options{ :
+@name"feature;
+@	:@operator:eq:@operand2o:Sass::Script::String	;iZ;
+@	:
+@type:string:@value"device-pixel-ratiou:Sass::Tree::IfNode‚[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei_:
+@expro:&Sass::Script::StringInterpolation
+:@beforeo:Sass::Script::String	;i_:@options{ :
+@type:string:@value"	min-;i_;@
+:@aftero;	;i_;@
+;;;" :	@mido:Sass::Script::Variable	;i_:@underscored_name"feature;@
+:
+@name"feature;@
+;"min-feature:@children[ o; ;0;i`;o;	
+;
+o;	;i`;@
+;;;"	max-;i`;@
+;o;	;i`;@
+;;;" ;o;	;i`;"feature;@
+;"feature;@
+;"max-feature;[ [o:Sass::Tree::VariableNode:@guarded0;i[:
+@expro:Sass::Script::Funcall;i[;
+@	;"breakpoint-experimental:@splat0:
+@args[o:&Sass::Script::StringInterpolation
+:@beforeo;	;i[;
+@	;;;"	min-;i[;
+@	:@aftero;	;i[;
+@	;;;" :	@mido;	;i[;	"feature;
+@	;"featureo;	;i[;	"prefix;
+@	;"prefix:@keywords{ ;
+@	;"min-feature:@children[ o;;0;i\;o;;i\;
+@	;"breakpoint-experimental;0;[o;
+;o;	;i\;
+@	;;;"	max-;i\;
+@	;o;	;i\;
+@	;;;" ;o;	;i\;	"feature;
+@	;"featureo;	;i\;	"prefix;
+@	;"prefix;{ ;
+@	;"max-feature;[ o:Sass::Tree::CommentNode
+;ic;	@:@children[ :
+@type:silent;["/* Min/Max for given */o:Sass::Tree::VariableNode:@guarded0;id:
+@expro;;id;	@;
+"breakpoint-generate;0;[	o;	;id;"media_string;	@;
+"media-stringo;	;id;"min_feature;	@;
+"min-featureo;	;id;"min_value;	@;
+"min-valueo;	;id;"
+first;	@;
+"
+first;{ ;	@;
+"
+query;[ o;;0;ie;o;;ie;	@;
+"	join;0;[o;	;ie;"
+query;	@;
+"
+queryo;;ie;	@;
+"breakpoint-generate;0;[o;	;ie;"media_string;	@;
+"media-stringo;	;ie;"max_feature;	@;
+"max-featureo;	;ie;"max_value;	@;
+"max-value;{ ;{ ;	@;
+"
+query;[ o;
+;if;	@;[ ;;;["/* Set Context */o;;0;ig;o;;ig;	@;
+")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;ig;"min_feature;	@;
+"min-featureo;	;ig;"min_value;	@;
+"min-value;{ ;	@;
+"context;[ o;;0;ih;o;;ih;	@;
+")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;ih;"max_feature;	@;
+"max-featureo;	;ih;"max_value;	@;
+"max-value;{ ;	@;
+"context;[ [o:Sass::Tree::CommentNode
+;i‰;
+@	:@children[ :
+@type:silent;["3/* If both are numbers, we've got a double! */u;.[o:Sass::Script::Operation
+:
+@lineiÂ:@operand1o; 
+;iÂ;o:Sass::Script::Funcall;iÂ:@options{ :
+@name"type-of:@splat0:
+@args[o;;iÂ;	@	;
+"nth;0;[o:Sass::Script::Variable	;iÂ:@underscored_name"breakpoint;	@	;
+"breakpointo:Sass::Script::Number;iÂ;	@	:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;{ ;	@	:@operator:eq:@operand2o:Sass::Script::String	;iÂ;	@	:
+@type:string;"number;	@	;:and;o; 
+;iÂ;o;;iÂ;	@	;
+"type-of;0;[o;;iÂ;	@	;
+"nth;0;[o;	;iÂ;"breakpoint;	@	;
+"breakpointo;;iÂ;	@	;@;"2;[ ;i;{ ;{ ;	@	;;;o;	;iÂ;	@	;;;"numberu:Sass::Tree::IfNode
+[o:Sass::Script::Operation
+:
+@lineiˇ:@operand1o; 
+;iˇ;o:Sass::Script::Funcall;iˇ:@options{ :
+@name"type-of:@splat0:
+@args[o;;iˇ;	@	;
+"nth;0;[o:Sass::Script::Variable	;iˇ:@underscored_name"breakpoint;	@	;
+"breakpointo:Sass::Script::Number;iˇ;	@	:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;{ ;	@	:@operator:eq:@operand2o:Sass::Script::String	;iˇ;	@	:
+@type:string;"string;	@	;:and;o; 
+;iˇ;o;;iˇ;	@	;
+"type-of;0;[o;;iˇ;	@	;
+"nth;0;[o;	;iˇ;"breakpoint;	@	;
+"breakpointo;;iˇ;	@	;@;"2;[ ;i;{ ;{ ;	@	;;;o;	;iˇ;	@	;;;"stringu:Sass::Tree::IfNodeá[00[o:Sass::Tree::CommentNode
+:
+@linei:@options{ :@children[ :
+@type:silent:@value["a/* Because we can have either the first or second option be the feature, we switch on it. */u:Sass::Tree::IfNode#[o:Sass::Script::Operation
+:
+@linei:@operand1o:Sass::Script::Funcall;i:@options{ :
+@name"type-of:@splat0:
+@args[o;;i;	@;
+"nth;0;[o:Sass::Script::Variable	;i:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;i;	@:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;{ ;	@:@operator:eq:@operand2o:Sass::Script::String	;i;	@:
+@type:identifier;"stringu:Sass::Tree::IfNode[o:Sass::Script::Operation
+:
+@linei:@operand1o:Sass::Script::Funcall;i:@options{ :
+@name"type-of:@splat0:
+@args[o;;i;	@;
+"nth;0;[o:Sass::Script::Variable	;i:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;i;	@:@denominator_units[ :@original"2:@numerator_units[ :@valuei:@keywords{ ;{ ;	@:@operator:eq:@operand2o:Sass::Script::String	;i;	@:
+@type:identifier;"string0[o:Sass::Tree::VariableNode:@guarded0;i:
+@expro;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"2;[ ;i;{ ;	@;
+"feature:@children[ o;;0;i;o;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"1;[ ;i;{ ;	@;
+"
+value;[ [o:Sass::Tree::VariableNode:@guarded0;i:
+@expro;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"1;[ ;i;{ ;	@;
+"feature:@children[ o;;0;i;o;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"2;[ ;i;{ ;	@;
+"
+value;[ u;Ä[o:Sass::Script::Operation
+:
+@linei:@operand1o; 
+;i;o; 
+;i;o:Sass::Script::Variable	;i:@underscored_name"feature:@options{ :
+@name"feature;
+@:@operator:eq:@operand2o:Sass::Script::String	;i;
+@:
+@type:string:@value"device-pixel-ratio;
+@;:or;o; 
+;i;o;	;i;	"feature;
+@;"feature;
+@;;;o;	;i;
+@;;;"min-device-pixel-ratio;
+@;;;o; 
+;i;o;	;i;	"feature;
+@;"feature;
+@;;;o;	;i;
+@;;;"max-device-pixel-ratio0[o:Sass::Tree::VariableNode:@guarded0;i:
+@expro:Sass::Script::Funcall;i;
+@;"breakpoint-experimental:@splat0:
+@args[o;	;i;	"feature;
+@;"featureo;	;i;	"prefix;
+@;"prefix:@keywords{ ;
+@;"feature:@children[ o:Sass::Tree::CommentNode
+;i ;
+@;[ ;:silent;["]/*$value: 96 * $value * 1dpi;
+ *        @if $feature == 'device-pixel-ratio' {
+ *          $feature: 'resolution';
+ *        }
+ *        @else if $feature == 'min-device-pixel-ratio' {
+ *          $feature: 'min-resolution';
+ *        }
+ *        @else if $feature == 'max-device-pixel-ratio' {
+ *          $feature: 'max-resolution';
+ *        } */o; 
+;i,;@;[ ;	;
+;["//* If EM Breakpoints are active, do it! */u;[[o:Sass::Script::Operation
+:
+@linei-:@operand1o:Sass::Script::Variable	;i-:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;i-;o:Sass::Script::Funcall;i-;
+@	;"type-of:@splat0:
+@args[o;	;i-;	"
+value;
+@	;"
+value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;i-;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;i.:
+@expro;;i.;
+@	;"breakpoint-to-base-em;0;[o;	;i.;	"
+value;
+@	;"
+valueo;	;i.;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"
+value:@children[ o; 
+;i1;@;[ ;	;
+;["/* Build the Query */o:Sass::Tree::VariableNode:@guarded0;i2:
+@expro:Sass::Script::Funcall;i2;@:
+@name"breakpoint-generate:@splat0:
+@args[	o:Sass::Script::Variable	;i2:@underscored_name"media_string;@;"media-stringo;	;i2;"feature;@;"featureo;	;i2;"
+value;@;"
+valueo;	;i2;"
+first;@;"
+first:@keywords{ ;@;"
+query;[ o; 
+;i3;@;[ ;	;
+;["/* Set Context */o;;0;i4;o;;i4;@;")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i4;"feature;@;"featureo;	;i4;"
+value;@;"
+value;{ ;@;"context;[ [u;[o:Sass::Script::Operation
+:
+@linei :@operand1o:Sass::Script::Funcall;i :@options{ :
+@name"breakpoint-string-value:@splat0:
+@args[o;;i ;	@;
+"nth;0;[o:Sass::Script::Variable	;i :@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;i ;	@:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;{ ;	@:@operator:eq:@operand2o:Sass::Script::Bool;i ;	@;Tu:Sass::Tree::IfNodeÒ[00[o:Sass::Tree::VariableNode:@guarded0:
+@linei:
+@expro:Sass::Script::Funcall;i:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;i:@underscored_name"breakpoint;
+@	;"breakpointo:Sass::Script::Number;i;
+@	:@denominator_units[ :@original"2:@numerator_units[ :@valuei:@keywords{ ;
+@	;"feature:@children[ o; ;0;i;o;	;i;
+@	;"nth;0;[o;	;i;"breakpoint;
+@	;"breakpointo;;i;
+@	;@;"1;[ ;i;{ ;
+@	;"
+value;[ [o:Sass::Tree::VariableNode:@guarded0;i:
+@expro;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"1;[ ;i;{ ;	@;
+"feature:@children[ o;;0;i;o;;i;	@;
+"nth;0;[o;	;i;"breakpoint;	@;
+"breakpointo;;i;	@;@;"2;[ ;i;{ ;	@;
+"
+value;[ o:Sass::Tree::CommentNode
+;i	;	@	:@children[ ;:silent;["//* If EM Breakpoints are active, do it! */u;[[o:Sass::Script::Operation
+:
+@linei
+:@operand1o:Sass::Script::Variable	;i
+:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;i
+;o:Sass::Script::Funcall;i
+;
+@	;"type-of:@splat0:
+@args[o;	;i
+;	"
+value;
+@	;"
+value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;i
+;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;i:
+@expro;;i;
+@	;"breakpoint-to-base-em;0;[o;	;i;	"
+value;
+@	;"
+valueo;	;i;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"
+value:@children[ o;
+;i;	@	;[ ;;;["/* Build the Query */o:Sass::Tree::VariableNode:@guarded0;i:
+@expro;;i;	@	;
+"breakpoint-generate;0;[	o;	;i;"media_string;	@	;
+"media-stringo;	;i;"feature;	@	;
+"featureo;	;i;"
+value;	@	;
+"
+valueo;	;i;"
+first;	@	;
+"
+first;{ ;	@	;
+"
+query;[ o;
+;i;	@	;[ ;;;["/* Set Context */o; ;!0;i;"o;;i;	@	;
+")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i;"feature;	@	;
+"featureo;	;i;"
+value;	@	;
+"
+value;{ ;	@	;
+"context;[ [o:Sass::Tree::CommentNode
+;iÊ;	@	:@children[ ;:silent;["/* See which is larger. */u;	[o:Sass::Script::Operation
+:
+@lineiÁ:@operand1o:Sass::Script::Funcall;iÁ:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;iÁ:@underscored_name"breakpoint;	@;
+"breakpointo:Sass::Script::Number;iÁ;	@:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;	@:@operator:gt:@operand2o;;iÁ;	@;
+"nth;0;[o;	;iÁ;"breakpoint;	@;
+"breakpointo;;iÁ;	@;@;"2;[ ;i;{ u:Sass::Tree::IfNodeÔ[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiÏ:
+@expro:Sass::Script::Funcall;iÏ:@options{ :
+@name"nth:@splat0:
+@args[o:Sass::Script::Variable	;iÏ:@underscored_name"breakpoint;
+@	;"breakpointo:Sass::Script::Number;iÏ;
+@	:@denominator_units[ :@original"1:@numerator_units[ :@valuei:@keywords{ ;
+@	;"min-value:@children[ o; ;0;iÌ;o;	;iÌ;
+@	;"nth;0;[o;	;iÌ;"breakpoint;
+@	;"breakpointo;;iÌ;
+@	;@;"2;[ ;i;{ ;
+@	;"max-value;[ [o:Sass::Tree::VariableNode:@guarded0;iË:
+@expro;;iË;	@;
+"nth;0;[o;	;iË;"breakpoint;	@;
+"breakpointo;;iË;	@;@;"2;[ ;i;{ ;	@;
+"min-value:@children[ o;;0;iÈ;o;;iÈ;	@;
+"nth;0;[o;	;iÈ;"breakpoint;	@;
+"breakpointo;;iÈ;	@;@;"1;[ ;i;{ ;	@;
+"max-value;[ o;
+;i;	@	;[ ;;;["//* If EM Breakpoints are active, do it! */u;e[o:Sass::Script::Operation
+:
+@lineiÒ:@operand1o:Sass::Script::Variable	;iÒ:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;iÒ;o:Sass::Script::Funcall;iÒ;
+@	;"type-of:@splat0:
+@args[o;	;iÒ;	"min_value;
+@	;"min-value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;iÒ;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;iÚ:
+@expro;;iÚ;
+@	;"breakpoint-to-base-em;0;[o;	;iÚ;	"min_value;
+@	;"min-valueo;	;iÚ;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"min-value:@children[ u;e[o:Sass::Script::Operation
+:
+@lineiÙ:@operand1o:Sass::Script::Variable	;iÙ:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;iÙ;o:Sass::Script::Funcall;iÙ;
+@	;"type-of:@splat0:
+@args[o;	;iÙ;	"max_value;
+@	;"max-value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;iÙ;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;iı:
+@expro;;iı;
+@	;"breakpoint-to-base-em;0;[o;	;iı;	"max_value;
+@	;"max-valueo;	;iı;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"max-value:@children[ o;
+;i¯;	@	;[ ;;;["/* Min/Max for given */o:Sass::Tree::VariableNode:@guarded0;i˘:
+@expro;;i˘;	@	;
+"breakpoint-generate;0;[	o;	;i˘;"media_string;	@	;
+"media-stringo;	;i˘;"min_feature;	@	;
+"min-featureo;	;i˘;"min_value;	@	;
+"min-valueo;	;i˘;"
+first;	@	;
+"
+first;{ ;	@	;
+"
+query;[ o; ;!0;i˙;"o;;i˙;	@	;
+"	join;0;[o;	;i˙;"
+query;	@	;
+"
+queryo;;i˙;	@	;
+"breakpoint-generate;0;[o;	;i˙;"media_string;	@	;
+"media-stringo;	;i˙;"max_feature;	@	;
+"max-featureo;	;i˙;"max_value;	@	;
+"max-value;{ ;{ ;	@	;
+"
+query;[ o;
+;i˚;	@	;[ ;;;["/* Set Context */o; ;!0;i¸;"o;;i¸;	@	;
+")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i¸;"min_feature;	@	;
+"min-featureo;	;i¸;"min_value;	@	;
+"min-value;{ ;	@	;
+"context;[ o; ;!0;i˝;"o;;i˝;	@	;
+")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i˝;"max_feature;	@	;
+"max-featureo;	;i˝;"max_value;	@	;
+"max-value;{ ;	@	;
+"context;[ [o:Sass::Tree::VariableNode:@guarded0;i’:
+@expro;	;i’;	"breakpoint;
+@	;"breakpoint;
+@	;"
+value:@children[ u;÷[o:Sass::Script::Operation
+:
+@linei÷:@operand1o:Sass::Script::Funcall;i÷:@options{ :
+@name"type-of:@splat0:
+@args[o:Sass::Script::Variable	;i÷:@underscored_name"breakpoint;	@;
+"breakpoint:@keywords{ ;	@:@operator:eq:@operand2o:Sass::Script::String	;i÷;	@:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;i◊:
+@expro;	;i◊;"breakpoint_default_feature;	@;
+"breakpoint-default-feature;	@;
+"feature:@children[ o:Sass::Tree::CommentNode
+;i⁄;
+@	;[ :
+@type:silent;["//* If EM Breakpoints are active, do it! */u;Q[o:Sass::Script::Operation
+:
+@linei€:@operand1o:Sass::Script::Variable	;i€:@underscored_name"breakpoint_to_ems:@options{ :
+@name"breakpoint-to-ems;
+@	:@operator:and:@operand2o; 
+;i€;o:Sass::Script::Funcall;i€;
+@	;"type-of:@splat0:
+@args[o;	;i€;	"
+value;
+@	;"
+value:@keywords{ ;
+@	;:eq;o:Sass::Script::String	;i€;
+@	:
+@type:string:@value"number0[o:Sass::Tree::VariableNode:@guarded0;i‹:
+@expro;;i‹;
+@	;"breakpoint-to-base-em;0;[o;	;i‹;	"
+value;
+@	;"
+valueo;	;i‹;	"base_font_size;
+@	;"base-font-size;{ ;
+@	;"
+value:@children[ o;
+;iﬁ;
+@	;[ ;;;["/* Build the Query */o;;0;iﬂ;o:Sass::Script::Funcall;iﬂ;
+@	;"breakpoint-generate:@splat0:
+@args[	o;	;iﬂ;	"media_string;
+@	;"media-stringo;	;iﬂ;	"feature;
+@	;"featureo;	;iﬂ;	"
+value;
+@	;"
+valueo;	;iﬂ;	"
+first;
+@	;"
+first:@keywords{ ;
+@	;"
+query;[ o;
+;i‡;
+@	;[ ;;;["/* Set Context */o;;0;i·;o;;i·;
+@	;")U2V0IHlvdXIgb3duIGRhbW4gY29udGV4dHMh;0;[o;	;i·;	"feature;
+@	;"featureo;	;i·;	"
+value;
+@	;"
+value;{ ;
+@	;"context;[ o:Sass::Tree::ReturnNode	;io;o;"	;io;#"
+query;	@;"
+query;	@;
+[ ;[
+[o;";#"breakpoint;	@;"breakpoint0[o;";#"media_string;	@;"media-string0[o;";#"
+first;	@;"
+firsto;;i«;	@;F[o;";#"prefix;	@;"prefixo;;i«;	@;F[o;";#"base_font_size;	@;"base-font-sizeo;"	;i«;#"breakpoint_base_font_size;	@;"breakpoint-base-font-sizeo;%;ir;T;	@;"breakpoint-generate;0;
+[
+o;
+;is;	@;
+[ ;;;[",/* Media Query string to be returned */o;;0;it;o;	;it;	@;;;" ;	@;"new-string;
+[ o;
+;iv;	@;
+[ ;;;["</* If it's the first item, it gets special treatment */u;$ç[o:Sass::Script::Operation
+:
+@lineiw:@operand1o:Sass::Script::Variable	;iw:@underscored_name"
+first:@options{ :
+@name"
+first;
+@	:@operator:eq:@operand2o:Sass::Script::Bool;iw;
+@	:@valueTu:Sass::Tree::IfNodeT[00[u:Sass::Tree::IfNode4[o:Sass::Script::Operation
+:
+@lineià:@operand1o:Sass::Script::Variable	;ià:@underscored_name"feature:@options{ :
+@name"feature;
+@	:@operator:neq:@operand2o:Sass::Script::Bool;ià;
+@	:@valueFu:Sass::Tree::IfNodeû[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiå:
+@expro:Sass::Script::Funcall;iå:@options{ :
+@name"unquote:@splat0:
+@args[o:&Sass::Script::StringInterpolation
+:@beforeo:Sass::Script::String	;iå;
+@	:
+@type:string:@value"
+and (;iå;
+@	:@aftero;	;iå;
+@	;;;"):	@mido:Sass::Script::Variable	;iå:@underscored_name"
+value;
+@	;"
+value:@keywords{ ;
+@	;"new-string:@children[ [o:Sass::Tree::VariableNode:@guarded0;iâ:
+@expro:Sass::Script::Funcall;iâ;
+@	;"unquote:@splat0:
+@args[o:&Sass::Script::StringInterpolation
+:@beforeo:Sass::Script::String	;iâ;
+@	:
+@type:string;"
+and (;iâ;
+@	:@aftero;
+;o;	;iâ;
+@	;;;": ;iâ;
+@	;o;	;iâ;
+@	;;;"):	@mido;	;iâ;	"
+value;
+@	;"
+value;o;	;iâ;	"feature;
+@	;"feature:@keywords{ ;
+@	;"new-string:@children[ [
+o:Sass::Tree::CommentNode
+;ix;
+@	:@children[ :
+@type:silent;["/* And Statement */o:Sass::Tree::VariableNode:@guarded0;iy:
+@expro:Sass::Script::String	;iy;
+@	;:string;"	and ;
+@	;"and;[ o;
+;iz;
+@	;[ ;;;[">/* If $media is blank (i.e. all), remove and statement */u;G[o:Sass::Script::Operation
+:
+@linei{:@operand1o:Sass::Script::Variable	;i{:@underscored_name"
+media:@options{ :
+@name"
+media;
+@	:@operator:eq:@operand2o:Sass::Script::String	;i{;
+@	:
+@type:string:@value" 0[o:Sass::Tree::VariableNode:@guarded0;i|:
+@expro;	;i|;
+@	;;;" ;
+@	;"and:@children[ u;÷[o:Sass::Script::Operation
+:
+@linei:@operand1o:Sass::Script::Variable	;i:@underscored_name"feature:@options{ :
+@name"feature;
+@	:@operator:neq:@operand2o:Sass::Script::Bool;i;
+@	:@valueFu:Sass::Tree::IfNodeo[00[o:Sass::Tree::VariableNode:@guarded0:
+@lineiÉ:
+@expro: Sass::Script::Interpolation:@before0;iÉ:@whitespace_beforei≥2:@options{ :@aftero:Sass::Script::Funcall;iÉ;@	:
+@name"unquote:@splat0:
+@args[o:&Sass::Script::StringInterpolation
+;
+o:Sass::Script::String	;iÉ;@	:
+@type:string:@value" ;iÉ;@	;o;
+;
+o;	;iÉ;@	;;;"(;iÉ;@	;o;	;iÉ;@	;;;"):	@mido:Sass::Script::Variable	;iÉ:@underscored_name"
+value;@	;"
+value;o;	;iÉ;"and;@	;"and:@keywords{ :@originally_textF;o;	;iÉ;"
+media;@	;"
+media:@whitespace_after0;@	;"new-string:@children[ [o:Sass::Tree::VariableNode:@guarded0;iÄ:
+@expro: Sass::Script::Interpolation:@before0;iÄ:@whitespace_beforeiY2;
+@	:@aftero:Sass::Script::Funcall;iÄ;
+@	;"unquote:@splat0:
+@args[o:&Sass::Script::StringInterpolation
+;o:Sass::Script::String	;iÄ;
+@	:
+@type:string;" ;iÄ;
+@	;o;
+;o;	;iÄ;
+@	;;;"(;iÄ;
+@	;o;
+;o;	;iÄ;
+@	;;;": ;iÄ;
+@	;o;	;iÄ;
+@	;;;"):	@mido;	;iÄ;	"
+value;
+@	;"
+value; o;	;iÄ;	"feature;
+@	;"feature; o;	;iÄ;	"and;
+@	;"and:@keywords{ :@originally_textF; o;	;iÄ;	"
+media;
+@	;"
+media:@whitespace_after0;
+@	;"new-string:@children[ o;*	;iê;o;"	;iê;#"new_string;	@;"new-string;	@;
+[ ;[	[o;";#"
+media;	@;"
+media0[o;";#"feature;	@;"feature0[o;";#"
+value;	@;"
+value0[o;";#"
+first;	@;"
+firsto;;ir;	@;F

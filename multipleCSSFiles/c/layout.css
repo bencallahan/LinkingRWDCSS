@@ -1,0 +1,25 @@
+body {
+  min-width: 40em;
+}
+
+aside { 
+  width: 49%;
+  float: right;
+}
+.primary {
+  width: 49%;
+  float: left;
+}
+
+
+
+/* styles for viewport widths which are greater than or equal to 60em */
+/*   - these styles will be ignored by IE 8 and older */
+@media (min-width: 60em) {
+  aside {
+    width: 29%;
+  }
+  .primary {
+    width: 69%;
+  }
+}

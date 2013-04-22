@@ -1,0 +1,38 @@
+@-webkit-viewport {
+  width: device-width; }
+
+@-moz-viewport {
+  width: device-width; }
+
+@-ms-viewport {
+  width: device-width; }
+
+@-o-viewport {
+  width: device-width; }
+
+@viewport {
+  width: device-width; }
+
+/* line 1, ../scss/_primary.scss */
+.primary {
+  background-color: #bbb;
+  width: 100%;
+  min-height: 10em;
+  /* just to help us see it */
+  width: 49%;
+  float: left;
+  width: 69%; }
+
+/* line 1, ../scss/_secondary.scss */
+.secondary {
+  color: #333;
+  background-color: #ddd;
+  width: 100%;
+  min-height: 5em;
+  width: 49%;
+  float: right;
+  width: 29%; }
+
+/* line 11, ../scss/no-mq.scss */
+body {
+  min-width: 60em; }

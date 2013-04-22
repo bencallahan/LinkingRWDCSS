@@ -1,0 +1,15 @@
+.secondary {
+  color: #333;
+  background-color: #ddd;
+  width: 100%;
+  min-height: 5em;
+
+  @include breakpoint(40em, $no-query: true) {
+    width: 49%;
+    float: right;
+  }
+
+  @include breakpoint(60em, $no-query: true) {
+    width: 29%;
+  }
+}

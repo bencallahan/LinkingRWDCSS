@@ -1,0 +1,46 @@
+@-webkit-viewport { width:device-width; }
+   @-moz-viewport { width:device-width; }
+    @-ms-viewport { width:device-width; }
+     @-o-viewport { width:device-width; }
+        @viewport { width:device-width; }
+
+
+/* styles for ALL viewport widths */
+aside {
+  color: #333;
+  background-color: #ddd;
+  width: 100%;
+  min-height: 5em; /* just to help us see it */
+}
+
+.primary {
+  background-color: #bbb;
+  width: 100%;
+  min-height: 10em; /* just to help us see it */
+}
+
+
+/* styles for viewport widths which are greater than or equal to 40em */
+/*   - these styles will be ignored by IE 8 and older */
+@media (min-width: 40em) {
+  aside { 
+    width: 49%;
+    float: right;
+  }
+  .primary {
+    width: 49%;
+    float: left;
+  }
+}
+
+
+/* styles for viewport widths which are greater than or equal to 60em */
+/*   - these styles will be ignored by IE 8 and older */
+@media (min-width: 60em) {
+  aside {
+    width: 29%;
+  }
+  .primary {
+    width: 69%;
+  }
+}
