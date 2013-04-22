@@ -19,5 +19,19 @@ the single file
 - Doesn’t require a preprocessor
 - At least two requests
 - Requires you to separate layout from other styles
-- Allows you to start with small layouts and serve a single large layout to old IE without JS
--- Requests go up if you use multiple MQs
+- Allows you to start with small layouts and serve a single large layout to old IE without JS (requests go up if you use multiple MQs)
+
+
+#Breakpoint Based Partials
+- Allows you to start with small layouts and serve large layout to old IE without JS
+- Only 1 or 2 requests
+- Requires preprocessor
+- Maintenance can be complex
+
+
+#Module Based Partials
+- Single Request
+- Easy Maintenance
+- Allows you to start with small layouts and serve large layout to old IE without JS
+- Single request for all
+- Requires Preprocessor
