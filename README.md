@@ -13,3 +13,11 @@ These are four ways to link RWD styles.
 - Large sites can be difficult to maintain because of the size of
 the single file
 
+
+#Multiple CSS Files
+(http://adactio.com/journal/4494/)
+- Doesn’t require a preprocessor
+- At least two requests
+- Requires you to separate layout from other styles
+- Allows you to start with small layouts and serve a single large layout to old IE without JS
+-- Requests go up if you use multiple MQs
