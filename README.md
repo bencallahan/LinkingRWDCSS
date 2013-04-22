@@ -23,6 +23,7 @@ the single file
 
 
 #Breakpoint Based Partials
+(http://nicolasgallagher.com/mobile-first-css-sass-and-ie/)
 - Allows you to start with small layouts and serve large layout to old IE without JS
 - Only 1 or 2 requests
 - Requires preprocessor
@@ -30,6 +31,7 @@ the single file
 
 
 #Module Based Partials
+(http://seesparkbox.com/foundry/there_is_no_breakpoint)
 - Single Request
 - Easy Maintenance
 - Allows you to start with small layouts and serve large layout to old IE without JS
